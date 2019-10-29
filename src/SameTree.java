@@ -12,11 +12,11 @@ public class SameTree {
      */
     public static void main(String[] args) {
         SameTree st = new SameTree();
-        SameTree.TreeNode t1 = new SameTree().new TreeNode(1);
-        SameTree.TreeNode t1_left = new SameTree().new TreeNode(2);
+        TreeNode t1 = new TreeNode(1);
+        TreeNode t1_left = new TreeNode(2);
         t1.left = t1_left;
-        SameTree.TreeNode t2 = new SameTree().new TreeNode(1);
-        SameTree.TreeNode t2_left = new SameTree().new TreeNode(1);
+        TreeNode t2 = new TreeNode(1);
+        TreeNode t2_left = new TreeNode(1);
         t2.left = t2_left;
         boolean result = st.isSameTree(t1, t2);
         System.out.println(result);
@@ -32,11 +32,10 @@ public class SameTree {
                 isSameTree(p.left, q.left);
     }
 
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { val = x; }
-
-    }
+//    public class TreeNode {
+//        int val;
+//        TreeNode left;
+//        TreeNode right;
+//        TreeNode(int x) { val = x; }
+//    }
 }

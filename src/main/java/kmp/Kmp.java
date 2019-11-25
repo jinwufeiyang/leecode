@@ -5,7 +5,7 @@ package kmp;
  * @Date: 2019/11/24 0:23
  * @Version 1.0
  */
-public class Kmp_next {
+public class Kmp {
 
 
     /**
@@ -102,7 +102,7 @@ public class Kmp_next {
     }
 
     public static void main(String[] args) {
-        Kmp_next k = new Kmp_next();
+        Kmp k = new Kmp();
         String T = "ABCDABD";
         String S = "BBC ABCDAB ABCDABCDABDE";
         System.out.println(k.Index_KMP(S,T,0));

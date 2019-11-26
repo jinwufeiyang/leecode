@@ -121,11 +121,11 @@ public class Bm {
 
     public static void main(String[] args) {
         //主串
-//        String originString = generateString(10);
-        String originString = "HERE IS A SIMPLE EXAMPLE";
+        String originString = generateString(10);
+//        String originString = "HERE IS A SIMPLE EXAMPLE";
         //模式串
-//        String moduleString = generateString(4);
-        String moduleString = "EXAMPLE";
+        String moduleString = generateString(4);
+//        String moduleString = "EXAMPLE";
 
 
         System.out.println("主串：" + originString);

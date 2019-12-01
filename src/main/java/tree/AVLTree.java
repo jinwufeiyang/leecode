@@ -148,6 +148,11 @@ public class AVLTree {
         System.out.println("\n-----------");
         System.out.println("中序遍历：");
         avlTree.inOrder(avlTree.root);
+        System.out.println("\n删除结点后中序遍历:");
+        int key = 6;
+        avlTree.root = avlTree.deleteNode(avlTree.root, key);
+        avlTree.inOrder(avlTree.root);
+        System.out.println("\n删除" + key + "后头结点为：" + avlTree.root.val);
     }
 
     void preOrder(Node node) {
@@ -163,6 +168,69 @@ public class AVLTree {
             inOrder(node.getLeft());
             System.out.print(node.val+" ");
             inOrder(node.getRight());
+        }
+    }
+
+    Node deleteNode(Node root, int val) {
+        if (root == null) {
+            return root;
+        }
+        if (val < root.val) {
+            root.setLeft(deleteNode(root.getLeft(), val));
+        } else if (val > root.val) {
+            root.setRight(deleteNode(root.getRight(), val));
+        } else {
+            //删除节点有两个孩子
+            if (root.getLeft() != null && root.getRight() != null) {
+                //设置当前val值为待删结点右子树最小值
+                root.setVal(findMin(root.getRight()));
+                //重置右子树最小值为NULL
+                root.setRight(deleteNode(root.getRight(), root.val));
+            } else {
+                //删除节点只有一个孩子或者没有孩子
+                root = (root.getLeft() != null) ? root.getLeft() : root.getRight();
+            }
+        }
+        //以下操作是为了恢复AVL树的平衡性
+        if (root == null) {
+            return root;
+        }
+        root.setHeight(max(height(root.getLeft()), height(root.getRight())) + 1);
+        int balance = getBalance(root);
+        //左-左情况，这里使用>=而不是>就是为了保证这些情形下使用的是单旋转而不是双旋转
+        if (balance > 1 && getBalance(root.getLeft()) >= 0) {
+            return rightRotate(root);
+        }
+        //左-右情况
+        if (balance > 1 && getBalance(root.getLeft()) < 0)
+        {
+            root.setLeft(leftRotate(root.getLeft()));
+            return rightRotate(root);
+        }
+
+        //右-右情况
+        if (balance < -1 && getBalance(root.getRight()) <= 0) {
+            return leftRotate(root);
+        }
+        //右-左情况
+        if (balance < -1 && getBalance(root.getRight()) > 0)
+        {
+            root.setRight(rightRotate(root.getRight()));
+            return leftRotate(root);
+        }
+        return root;
+    }
+
+    /**
+     * 查找root为根结点最小值
+     * @param root root
+     * @return int
+     */
+    private int findMin(Node root) {
+        if (root.getLeft() == null) {
+            return root.getVal();
+        } else {
+            return findMin(root.getLeft());
         }
     }
 

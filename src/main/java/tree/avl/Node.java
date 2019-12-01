@@ -1,4 +1,4 @@
-package tree;
+package tree.avl;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

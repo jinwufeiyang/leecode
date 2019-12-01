@@ -1,4 +1,4 @@
-package tree;
+package tree.binarytree;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

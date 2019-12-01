@@ -28,13 +28,13 @@ public class AVLTree {
      * @return
      */
     private int max(int a, int b) {
-        return a > b ? a : b;
+        return Math.max(a, b);
     }
 
     /**
      * 右旋转
      *
-     * @param y
+     * @param y y
      * @return
      */
     Node rightRotate(Node y) {

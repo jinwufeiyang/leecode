@@ -83,14 +83,12 @@ public class BinarySortTree {
         if (tree == null) {
             return false;
         } else if (tree.getLchild() == null) {
-//            tree = tree.getRchild();
             if (parent.getLchild() == tree) { //删除结点是左孩子且删除结点的左孩子为空
                 parent.setLchild(tree.getRchild());
             } else {
                 parent.setRchild(tree.getRchild());
             }
         } else if (tree.getRchild() == null) {
-//            tree = tree.getLchild();
             if (parent.getLchild() == tree) { //删除结点是左孩子且删除结点的右孩子为空
                 parent.setLchild(tree.getLchild());
             } else {

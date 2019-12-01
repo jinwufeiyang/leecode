@@ -23,9 +23,9 @@ public class AVLTree {
     /**
      * 计算两个的最大值
      *
-     * @param a
-     * @param b
-     * @return
+     * @param a a
+     * @param b b
+     * @return 较大值
      */
     private int max(int a, int b) {
         return Math.max(a, b);
@@ -35,7 +35,7 @@ public class AVLTree {
      * 右旋转
      *
      * @param y y
-     * @return
+     * @return 新根节点
      */
     Node rightRotate(Node y) {
         Node x = y.getLeft();
@@ -51,8 +51,8 @@ public class AVLTree {
     /**
      * 左旋转
      *
-     * @param x
-     * @return
+     * @param x x
+     * @return 新根节点
      */
     Node leftRotate(Node x) {
 
@@ -69,8 +69,8 @@ public class AVLTree {
     /**
      *  获取平衡因子
      *
-     * @param node
-     * @return
+     * @param node node
+     * @return 平衡因子
      */
     int getBalance(Node node) {
         return node == null ? 0 : (height(node.getLeft()) - height(node.getRight()));
@@ -79,9 +79,9 @@ public class AVLTree {
     /**
      * 插入操作
      *
-     * @param node
-     * @param val
-     * @return
+     * @param node node
+     * @param val val
+     * @return node
      */
     Node insert(Node node, int val) {
         if (node == null) {
@@ -122,16 +122,27 @@ public class AVLTree {
     public static void main(String[] args) {
         AVLTree avlTree = new AVLTree();
         //创造AVL树
+        int i = 0;
         avlTree.root = avlTree.insert(avlTree.root, 3);
+        System.out.println("插入" + i++ +"个结点头结点为: " + avlTree.root.val);
         avlTree.root = avlTree.insert(avlTree.root, 2);
+        System.out.println("插入" + i++ +"个结点头结点为: " + avlTree.root.val);
         avlTree.root = avlTree.insert(avlTree.root, 1);
+        System.out.println("插入" + i++ +"个结点头结点为: " + avlTree.root.val);
         avlTree.root = avlTree.insert(avlTree.root, 4);
+        System.out.println("插入" + i++ +"个结点头结点为: " + avlTree.root.val);
         avlTree.root = avlTree.insert(avlTree.root, 5);
+        System.out.println("插入" + i++ +"个结点头结点为: " + avlTree.root.val);
         avlTree.root = avlTree.insert(avlTree.root, 6);
+        System.out.println("插入" + i++ +"个结点头结点为: " + avlTree.root.val);
         avlTree.root = avlTree.insert(avlTree.root, 7);
+        System.out.println("插入" + i++ +"个结点头结点为: " + avlTree.root.val);
         avlTree.root = avlTree.insert(avlTree.root, 10);
+        System.out.println("插入" + i++ +"个结点头结点为: " + avlTree.root.val);
         avlTree.root = avlTree.insert(avlTree.root, 9);
+        System.out.println("插入" + i++ +"个结点头结点为: " + avlTree.root.val);
         avlTree.root = avlTree.insert(avlTree.root, 8);
+        System.out.println("插入" + i++ +"个结点头结点为: " + avlTree.root.val);
         System.out.println("前序遍历：");
         avlTree.preOrder(avlTree.root);
         System.out.println("\n-----------");

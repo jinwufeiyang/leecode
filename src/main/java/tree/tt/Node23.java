@@ -3,15 +3,15 @@ package tree.tt;
 public class Node23<Key extends Comparable<Key>, Value> {
     private static final int N = 3;
     //父节点
-    private Node23 parent;
+    private Node23<Integer, Integer> parent;
     //子节点，左中右
-    private Node23[] childNodes = new Node23[N];
+    private Node23<Integer, Integer>[] childNodes = new Node23[N];
     //节点保存数据
-    private Data[] itemDatas = new Data[N - 1];
+    private Data<Integer, Integer>[] itemDatas = new Data[N - 1];
     //当前数据个数
     private int itemNum = 0;
 
-    public Data[] getItemDatas() {
+    public Data<Integer, Integer>[] getItemDatas() {
         return this.itemDatas;
     }
 
@@ -20,6 +20,10 @@ public class Node23<Key extends Comparable<Key>, Value> {
             itemDatas[i].displayData();
         }
         System.out.println("/");
+    }
+
+    public Node23<Integer, Integer>[] getChildNodes() {
+        return this.childNodes;
     }
 
     /**
@@ -43,7 +47,7 @@ public class Node23<Key extends Comparable<Key>, Value> {
      * 返回该节点的父节点
      * @return node
      */
-    public Node23 getParent() {
+    public Node23<Integer, Integer> getParent() {
         return this.parent;
     }
 
@@ -52,10 +56,10 @@ public class Node23<Key extends Comparable<Key>, Value> {
      * @param index 连接的位置（左子树，中子树，还是右子树）
      * @param child child
      */
-    public void connectChild(int index, Node23 child) {
+    public void connectChild(int index, Node23<Integer, Integer> child) {
         childNodes[index] = child;
         if (child != null) {
-            child.parent = this;
+            child.parent = (Node23<Integer, Integer>) this;
         }
     }
 
@@ -64,8 +68,8 @@ public class Node23<Key extends Comparable<Key>, Value> {
      * @param index 解除连接的位置
      * @return node
      */
-    public Node23 disconnectChild(int index) {
-        Node23 temp = childNodes[index];
+    public Node23<Integer, Integer> disconnectChild(int index) {
+        Node23<Integer, Integer> temp = childNodes[index];
         childNodes[index] = null;
         return temp;
     }
@@ -75,7 +79,7 @@ public class Node23<Key extends Comparable<Key>, Value> {
      * @param index 0为左，1为右
      * @return Data
      */
-    public Data getData(int index){
+    public Data<Integer, Integer> getData(int index){
         return itemDatas[index];
     }
 
@@ -84,7 +88,7 @@ public class Node23<Key extends Comparable<Key>, Value> {
      * @param index 0为左指数，1为中子树，2为右子树
      * @return
      */
-    public Node23 getChild(int index){
+    public Node23<Integer, Integer> getChild(int index){
         return childNodes[index];
     }
 
@@ -104,7 +108,7 @@ public class Node23<Key extends Comparable<Key>, Value> {
         for (int i = 0; i < itemNum; i++) {
             if (itemDatas[i] == null){
                 break;
-            }else if (itemDatas[i].getKey().compareTo(key) == 0){
+            }else if (itemDatas[i].getKey().compareTo((Integer) key) == 0){
                 return i;
             }
         }
@@ -116,7 +120,7 @@ public class Node23<Key extends Comparable<Key>, Value> {
      * @param data data
      * @return 返回插入的位置 0或则1
      */
-    public int insertData(Data data){
+    public int insertData(Data<Integer, Integer> data){
         itemNum ++;
         for (int i = N -2; i >= 0 ; i--) {
             if (itemDatas[i] == null){
@@ -138,8 +142,8 @@ public class Node23<Key extends Comparable<Key>, Value> {
      * 移除最后一个键值对（也就是有右边的键值对则移右边的，没有则移左边的）
      * @return 返回被移除的键值对
      */
-    public Data removeItem() {
-        Data temp = itemDatas[itemNum - 1];
+    public Data<Integer, Integer> removeItem() {
+        Data<Integer, Integer> temp = itemDatas[itemNum - 1];
         itemDatas[itemNum - 1] = null;
         itemNum--;
         return temp;

@@ -5,7 +5,47 @@ public class Tree23<Key extends Comparable<Key>, Value> {
     /**
      * 根节点
      */
-    private Node23 root = new Node23();
+    private Node23<Integer, Integer> root = new Node23<Integer, Integer>();
+
+
+    public static void main(String[] args) {
+        Tree23<Integer, Integer> tree23 = new Tree23();
+        tree23.insert(1, 1);
+        System.out.println("1111");
+        tree23.root.displayNode();
+        System.out.println(tree23.root.isFull());
+        System.out.println(tree23.root.getParent());
+        Node23<Integer, Integer>[] childNodes1 = tree23.root.getChildNodes();
+        for (int i = 0; i < childNodes1.length; i++) {
+            if (childNodes1[i] != null) {
+                childNodes1[i].displayNode();
+            }
+        }
+        tree23.insert(2, 2);
+        System.out.println("2222");
+        tree23.root.displayNode();
+        System.out.println(tree23.root.isFull());
+        System.out.println(tree23.root.getParent());
+        Node23<Integer, Integer>[] childNodes2 = tree23.root.getChildNodes();
+        for (int i = 0; i < childNodes2.length; i++) {
+            if (childNodes2[i] != null) {
+                childNodes2[i].displayNode();
+            }
+        }
+        tree23.insert(3, 3);
+        System.out.println("3333");
+        tree23.root.displayNode();
+        System.out.println(tree23.root.isFull());
+        System.out.println(tree23.root.getParent());
+        Node23<Integer, Integer>[] childNodes3 = tree23.root.getChildNodes();
+        for (int i = 0; i < childNodes3.length; i++) {
+            if (childNodes3[i] != null) {
+                childNodes3[i].displayNode();
+            }
+        }
+    }
+
+
 
 
     /**
@@ -13,11 +53,11 @@ public class Tree23<Key extends Comparable<Key>, Value> {
      * @param key key
      * @return 返回键值对中的value
      */
-    private Value find(Key key) {
-        Node23 curNode = root;
+    public Value find(Key key) {
+        Node23<Integer, Integer> curNode = root;
         int childNum;
         while (true) {
-            if ((childNum = curNode.findItem(key)) != -1) {
+            if ((childNum = curNode.findItem((Integer) key)) != -1) {
                 return (Value) curNode.getItemDatas()[childNum].getValue();
             } else if (curNode.isLeaf()) {
                 // 假如到了叶子节点还没有找到，则树中不包含key
@@ -34,12 +74,12 @@ public class Tree23<Key extends Comparable<Key>, Value> {
      * @param key key
      * @return 返回子节点，若结点包含key,则返回传参结点
      */
-    private Node23 getNextChild(Node23 node, Key key) {
+    private Node23<Integer, Integer> getNextChild(Node23<Integer, Integer> node, Key key) {
         for (int i = 0; i < node.getItemNum(); i++) {
-            if (node.getData(i).getKey().compareTo(key)>0){
+            if (node.getData(i).getKey().compareTo((Integer) key)>0){
                 return node.getChild(i);
             }
-            else if (node.getData(i).getKey().compareTo(key) == 0){
+            else if (node.getData(i).getKey().compareTo((Integer) key) == 0){
                 return node;
             }
         }
@@ -52,8 +92,8 @@ public class Tree23<Key extends Comparable<Key>, Value> {
      * @param value value
      */
     public void insert(Key key,Value value){
-        Data data = new Data(key,value);
-        Node23 curNode = root;
+        Data<Integer, Integer> data = new Data(key,value);
+        Node23<Integer, Integer> curNode = root;
         // 一直找到叶节点
         while(true){
             if (curNode.isLeaf()){
@@ -62,8 +102,8 @@ public class Tree23<Key extends Comparable<Key>, Value> {
                 curNode = getNextChild(curNode,key);
                 for (int i = 0; i < curNode.getItemNum(); i++) {
                     // 假如key在node中则进行更新
-                    if (curNode.getData(i).getKey().compareTo(key) == 0){
-                        curNode.getData(i).setValue(value);
+                    if (curNode.getData(i).getKey().compareTo((Integer) key) == 0){
+                        curNode.getData(i).setValue((Integer) value);
                         return;
                     }
                 }
@@ -87,13 +127,13 @@ public class Tree23<Key extends Comparable<Key>, Value> {
      * @param node 被裂变的结点
      * @param data 要被保存的键值对
      */
-    private void split(Node23 node, Data data) {
-        Node23 parent = node.getParent();
+    private void split(Node23<Integer, Integer> node, Data<Integer, Integer> data) {
+        Node23<Integer, Integer> parent = node.getParent();
         // newNode用来保存最大的键值对
-        Node23 newNode = new Node23();
+        Node23<Integer, Integer> newNode = new Node23<Integer, Integer>();
         // newNode2用来保存中间key的键值对
-        Node23 newNode2 = new Node23();
-        Data mid;
+        Node23<Integer, Integer> newNode2 = new Node23<Integer, Integer>();
+        Data<Integer, Integer> mid;
 
         if (data.getKey().compareTo(node.getData(0).getKey())<0){
             newNode.insertData(node.removeItem());
@@ -128,18 +168,18 @@ public class Tree23<Key extends Comparable<Key>, Value> {
      * @param parent parent
      * @param node node中只含有一个键值对结点
      */
-    private void connectNode(Node23 parent, Node23 node) {
-        Data data = node.getData(0);
+    private void connectNode(Node23<Integer, Integer> parent, Node23<Integer, Integer> node) {
+        Data<Integer, Integer> data = node.getData(0);
         if (node == root){
             return;
         }
         // 假如父节点为3-结点
         if (parent.isFull()){
             // 爷爷结点（爷爷救葫芦娃）
-            Node23 gParent = parent.getParent();
-            Node23 newNode = new Node23();
-            Node23 temp1,temp2;
-            Data itemData;
+            Node23<Integer, Integer> gParent = parent.getParent();
+            Node23<Integer, Integer> newNode = new Node23<Integer, Integer>();
+            Node23<Integer, Integer> temp1,temp2;
+            Data<Integer, Integer> itemData;
 
             if (data.getKey().compareTo(parent.getData(0).getKey())<0){
                 temp1 = parent.disconnectChild(1);
@@ -148,6 +188,7 @@ public class Tree23<Key extends Comparable<Key>, Value> {
                 newNode.connectChild(1,temp2);
                 newNode.insertData(parent.removeItem());
 
+                // todo ???? 先移除该值，然后在插入进去：：应该是为了在移除的时候把参数重置为最初状态
                 itemData = parent.removeItem();
                 parent.insertData(itemData);
                 parent.connectChild(0,node);
@@ -155,7 +196,7 @@ public class Tree23<Key extends Comparable<Key>, Value> {
             }else if(data.getKey().compareTo(parent.getData(1).getKey())<0){
                 temp1 = parent.disconnectChild(0);
                 temp2 = parent.disconnectChild(2);
-                Node23 tempNode = new Node23();
+                Node23<Integer, Integer> tempNode = new Node23<Integer, Integer>();
 
                 newNode.insertData(parent.removeItem());
                 newNode.connectChild(0,newNode.disconnectChild(1));
@@ -185,7 +226,7 @@ public class Tree23<Key extends Comparable<Key>, Value> {
         // 假如父节点为2结点
         else{
             if (data.getKey().compareTo(parent.getData(0).getKey())<0){
-                Node23 tempNode = parent.disconnectChild(1);
+                Node23<Integer, Integer> tempNode = parent.disconnectChild(1);
                 parent.connectChild(0,node.disconnectChild(0));
                 parent.connectChild(1,node.disconnectChild(1));
                 parent.connectChild(2,tempNode);

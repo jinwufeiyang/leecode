@@ -93,6 +93,20 @@ public class Node23<Key extends Comparable<Key>, Value> {
     }
 
     /**
+     * 返回子树在父树的索引位置
+     * @param node23 node
+     * @return int
+     */
+    public int getChildIndex(Node23<Integer, Integer> node23) {
+        for (int i = 0; i < childNodes.length; i++) {
+            if (node23 == childNodes[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * @return 返回结点中键值对的数量，空则返回0
      */
     public int getItemNum(){
@@ -147,6 +161,20 @@ public class Node23<Key extends Comparable<Key>, Value> {
         itemDatas[itemNum - 1] = null;
         itemNum--;
         return temp;
+    }
+
+    public Data<Integer, Integer> removeAppointKey(Key key) {
+        int index = findItem(key);
+        if (index == 1) {
+            return removeItem();
+        } else {
+            //中间值，后续再插入
+            Data<Integer, Integer> tempData = removeItem();
+            //移除要删除的值
+            Data<Integer, Integer> removeItem = removeItem();
+            insertData(tempData);
+            return removeItem;
+        }
     }
 
 }

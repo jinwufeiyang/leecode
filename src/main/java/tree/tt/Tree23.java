@@ -44,19 +44,19 @@ public class Tree23<Key extends Comparable<Key>, Value> {
             }
         }
 
-        tree23.insert(4, 4);
-        System.out.println("4444");
-        tree23.root.displayNode();
-        System.out.println(tree23.root.isFull());
-        System.out.println(tree23.root.getParent());
-        Node23<Integer, Integer>[] childNodes4 = tree23.root.getChildNodes();
-        for (int i = 0; i < childNodes4.length; i++) {
-            if (childNodes4[i] != null) {
-                childNodes4[i].displayNode();
-                System.out.println("节点4是否已满：" + childNodes4[i].isFull());
-                System.out.println("节点4数：" + childNodes4[i].getItemNum());
-            }
-        }
+//        tree23.insert(4, 4);
+//        System.out.println("4444");
+//        tree23.root.displayNode();
+//        System.out.println(tree23.root.isFull());
+//        System.out.println(tree23.root.getParent());
+//        Node23<Integer, Integer>[] childNodes4 = tree23.root.getChildNodes();
+//        for (int i = 0; i < childNodes4.length; i++) {
+//            if (childNodes4[i] != null) {
+//                childNodes4[i].displayNode();
+//                System.out.println("节点4是否已满：" + childNodes4[i].isFull());
+//                System.out.println("节点4数：" + childNodes4[i].getItemNum());
+//            }
+//        }
 
         tree23.insert(5, 5);
         System.out.println("55555");
@@ -67,15 +67,47 @@ public class Tree23<Key extends Comparable<Key>, Value> {
         for (int i = 0; i < childNodes5.length; i++) {
             if (childNodes5[i] != null) {
                 childNodes5[i].displayNode();
-                System.out.println("节点5是否已满：" + childNodes4[i].isFull());
-                System.out.println("节点5数：" + childNodes4[i].getItemNum());
+                System.out.println("节点5是否已满：" + childNodes5[i].isFull());
+                System.out.println("节点5数：" + childNodes5[i].getItemNum());
             }
         }
 
+        tree23.insert(6, 6);
+        tree23.insert(7, 7);
+        tree23.insert(8, 8);
+
+        tree23.insert(4,4);
+
+        //中序遍历
+        System.out.println("\n\n中序遍历2-3树如下：");
+        tree23.inOrder(tree23.root);
+        //查找
+        int key = 5;
+        System.out.println("\n查找 key:" + key);
+        Integer value = tree23.find(key);
+        System.out.println("查找 key: " + key + " 对应的value: " + value);
+
+        tree23.delete(1);
+        System.out.println("\n\n删除中序遍历2-3树如下：");
+        tree23.inOrder(tree23.root);
     }
 
 
-
+    /**
+     * 查找key相等的树结点
+     * @param curNode curNode
+     * @param key key
+     * @return
+     */
+    public Node23<Integer, Integer> contain(Node23<Integer, Integer> curNode, Key key) {
+        if (curNode.findItem((Integer) key) != -1) {
+            return curNode;
+        } else if (curNode.isLeaf()) {
+            return null;
+        } else {
+            return contain(getNextChild(curNode, key), key);
+        }
+    }
 
     /**
      *查找含有key的键值对
@@ -113,6 +145,89 @@ public class Tree23<Key extends Comparable<Key>, Value> {
             }
         }
         return node.getChild(node.getItemNum());
+    }
+
+    /**
+     * 2-3树删除操作
+     * @param key key
+     */
+    public void delete(Key key) {
+        Node23<Integer, Integer> currentNode = contain(root, key);
+        //存在
+        if (currentNode != null) {
+            //该key存在的是几结点（2||3）
+            int itemNum = currentNode.getItemNum();
+            boolean isLeaf = currentNode.isLeaf();
+            if (isLeaf) {
+                //是叶子节点
+                if (itemNum == 2) {
+                    //1：待删除节点在叶子节点且叶子节点为3节点。。直接删除即可。
+                    currentNode.removeAppointKey((Integer) key);
+                } else {
+                    //2：叶子节点为2节点。。
+                    //父节点
+                    Node23<Integer, Integer> currentNodeParent = currentNode.getParent();
+                    //父节点数据个数
+                    int parentItemNum = currentNodeParent.getItemNum();
+                    /**
+                     * case1： 双亲也是2节点且拥有一个3节点的右孩子
+                     * case2： 双亲也是2节点，但右孩子也是2节点
+                     */
+                    int childIndex = currentNodeParent.getChildIndex(currentNode);
+                    //case1,此时只需要左旋操作，即可
+                    if (parentItemNum == 1 && currentNodeParent.getChild(1).getItemNum() == 2) {
+                        leftRotate(currentNodeParent);
+                    }
+                    if (parentItemNum == 1 && currentNodeParent.getChild(1).getItemNum() ==1) {
+                        
+                    }
+                }
+            } else {
+                //非叶子节点
+
+            }
+        }
+    }
+
+    /**
+     * 删除左旋操作
+     * case：双亲是2节点且有一个3节点的右孩子
+     * @param node23 node
+     */
+    private void leftRotate(Node23<Integer, Integer> node23) {
+        System.out.println("删除节点 的父节点数据如下:");
+        node23.getItemDatas()[0].displayData();
+        Node23<Integer, Integer> leftNode = node23.getChild(0);
+        Node23<Integer, Integer> rightNode = node23.getChild(1);
+        leftNode.removeItem();
+        leftNode.insertData(node23.removeItem());
+        Data<Integer, Integer> item1 = rightNode.removeItem();
+        Data<Integer, Integer> item2 = rightNode.removeItem();
+        rightNode.insertData(item1);
+        node23.insertData(item2);
+    }
+
+    /**
+     * 中序遍历
+     * @param root root
+     */
+    public void inOrder(Node23 root) {
+        if (root != null) {
+            int itemNum = root.getItemNum();
+            if (itemNum == 0) {
+                root.displayNode();
+            } else if (itemNum == 1) {
+                inOrder(root.getChild(0));
+                root.displayNode();
+                inOrder(root.getChild(1));
+            } else {
+                inOrder(root.getChild(0));
+                root.getItemDatas()[0].displayData();
+                inOrder(root.getChild(1));
+                root.getItemDatas()[1].displayData();
+                inOrder(root.getChild(2));
+            }
+        }
     }
 
     /**

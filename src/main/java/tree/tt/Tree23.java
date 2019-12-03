@@ -43,6 +43,35 @@ public class Tree23<Key extends Comparable<Key>, Value> {
                 childNodes3[i].displayNode();
             }
         }
+
+        tree23.insert(4, 4);
+        System.out.println("4444");
+        tree23.root.displayNode();
+        System.out.println(tree23.root.isFull());
+        System.out.println(tree23.root.getParent());
+        Node23<Integer, Integer>[] childNodes4 = tree23.root.getChildNodes();
+        for (int i = 0; i < childNodes4.length; i++) {
+            if (childNodes4[i] != null) {
+                childNodes4[i].displayNode();
+                System.out.println("节点4是否已满：" + childNodes4[i].isFull());
+                System.out.println("节点4数：" + childNodes4[i].getItemNum());
+            }
+        }
+
+        tree23.insert(5, 5);
+        System.out.println("55555");
+        tree23.root.displayNode();
+        System.out.println(tree23.root.isFull());
+        System.out.println(tree23.root.getParent());
+        Node23<Integer, Integer>[] childNodes5 = tree23.root.getChildNodes();
+        for (int i = 0; i < childNodes5.length; i++) {
+            if (childNodes5[i] != null) {
+                childNodes5[i].displayNode();
+                System.out.println("节点5是否已满：" + childNodes4[i].isFull());
+                System.out.println("节点5数：" + childNodes4[i].getItemNum());
+            }
+        }
+
     }
 
 

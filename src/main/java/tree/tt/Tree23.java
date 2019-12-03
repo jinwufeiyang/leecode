@@ -179,7 +179,7 @@ public class Tree23<Key extends Comparable<Key>, Value> {
                         leftRotate(currentNodeParent);
                     }
                     if (parentItemNum == 1 && currentNodeParent.getChild(1).getItemNum() ==1) {
-                        
+
                     }
                 }
             } else {

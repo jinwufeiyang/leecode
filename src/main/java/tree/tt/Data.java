@@ -13,4 +13,9 @@ public class Data<Key extends Comparable<Key>, Value> {
     public void displayData() {
         System.out.println("/" + key + "----" + value);
     }
+
+    public static void main(String[] args) {
+        boolean a = true;
+        boolean b = true;
+    }
 }

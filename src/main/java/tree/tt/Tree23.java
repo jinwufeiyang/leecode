@@ -164,30 +164,142 @@ public class Tree23<Key extends Comparable<Key>, Value> {
                     //1：待删除节点在叶子节点且叶子节点为3节点。。直接删除即可。
                     currentNode.removeAppointKey((Integer) key);
                 } else {
-                    //2：叶子节点为2节点。。
-                    //父节点
-                    Node23<Integer, Integer> currentNodeParent = currentNode.getParent();
-                    //父节点数据个数
-                    int parentItemNum = currentNodeParent.getItemNum();
-                    /**
-                     * case1： 双亲也是2节点且拥有一个3节点的右孩子
-                     * case2： 双亲也是2节点，但右孩子也是2节点
-                     */
-                    int childIndex = currentNodeParent.getChildIndex(currentNode);
-                    //case1,此时只需要左旋操作，即可
-                    if (parentItemNum == 1 && currentNodeParent.getChild(1).getItemNum() == 2) {
-                        leftRotate(currentNodeParent);
-                    }
-                    if (parentItemNum == 1 && currentNodeParent.getChild(1).getItemNum() ==1) {
+
+                    boolean fullTwoTreeFlag = isFullTwoTree(root);
+
+                    if (!fullTwoTreeFlag) {
+
+                        //2：叶子节点为2节点。。
+                        //父节点
+                        Node23<Integer, Integer> currentNodeParent = currentNode.getParent();
+                        //父节点数据个数
+                        int parentItemNum = currentNodeParent.getItemNum();
+                        /**
+                         * case1： 双亲也是2节点且拥有一个3节点的孩子
+                         * case2： 双亲也是2节点，孩子也是2节点
+                         * case3： 双亲是3节点，
+                         * case4： 当前树是一个满二叉树，删除任何一个都不能满足2-3树的定义。可以考虑降级
+                         */
+                        //当前结点在父节点的索引位置决定是左旋还是右旋
+                        int childIndex = currentNodeParent.getChildIndex(currentNode);
+                        //case1
+                        if (parentItemNum == 1) {
+                            //case1.1,此时只需要左旋操作，即可
+                            if (currentNodeParent.getChild(1).getItemNum() == 2 && childIndex == 0) {
+                                leftRotate(currentNodeParent);
+                            }
+                            //case1.2,此时只需要右旋操作
+                            if (currentNodeParent.getChild(0).getItemNum() == 2 && childIndex == 1) {
+                                rightRotate(currentNodeParent);
+                            }
+                        }
+                        //case2  垃圾，，，垃圾啊
+                        if (parentItemNum == 1) {
+                            //case2.1
+                            if (childIndex == 0 && currentNodeParent.getChild(1).getItemNum() ==1) {
+
+                            }
+                            //case2.2
+                            if (childIndex == 1 && currentNodeParent.getChild(0).getItemNum() == 1) {
+
+                            }
+                        }
+                        //case3
+                        if (parentItemNum == 2) {
+                            //0左1中2右
+                            int nodeParentChildIndex = currentNodeParent.getChildIndex(currentNode);
+                            if (nodeParentChildIndex == 2) {
+                                currentNode.removeItem();
+                                currentNodeParent.disconnectChild(2);
+                                Data<Integer, Integer> integerData = currentNodeParent.removeItem();
+                                currentNodeParent.getChild(1).insertData(integerData);
+                            } else if (nodeParentChildIndex == 1){
+                                currentNode.removeItem();
+                                currentNodeParent.disconnectChild(1);
+                                Data<Integer, Integer> integerData = currentNodeParent.removeItem();
+                                currentNodeParent.getChild(2).insertData(integerData);
+                            } else {
+                                Data<Integer, Integer> integerDataMax = currentNodeParent.removeItem();
+                                Data<Integer, Integer> integerDataMin = currentNodeParent.removeItem();
+                                currentNodeParent.insertData(integerDataMax);
+                                currentNode.removeItem();
+                                currentNodeParent.disconnectChild(0);
+                                currentNodeParent.getChild(1).insertData(integerDataMin);
+                            }
+                        }
+                    } else {
+                        //满二叉树，降级处理
+                        Node23<Integer, Integer> currentNodeParent = currentNode.getParent();
+                        currentNode.removeItem();
+
+                        int childIndex = currentNodeParent.getChildIndex(currentNode);
+                        Node23<Integer, Integer> otherNode = currentNodeParent.getChild(1-childIndex);
+                        currentNodeParent.disconnectChild(childIndex);
+                        currentNodeParent.disconnectChild(1-childIndex);
+
+                        Data<Integer, Integer> otherData = otherNode.removeItem();
+                        currentNodeParent.insertData(otherData);
+
+                        Node23<Integer, Integer> parentParent = currentNodeParent.getParent();
+                        while (parentParent != null) {
+                            parentParent = currentNodeParent.getParent();
+                            int parentChildIndex = parentParent.getChildIndex(currentNodeParent);
+                            Node23<Integer, Integer> parentParentChild = parentParent.getChild(1 - parentChildIndex);
+                            Data<Integer, Integer> parentParentChildData = parentParentChild.getData(0);
+                            if (parentChildIndex == 0) {
+                                Node23<Integer, Integer> childChild = parentParentChild.getChild(0);
+                                parentParentChild.disconnectChild(0);
+                                parentParent.insertData(parentParentChildData);
+                                parentParent.connectChild(1, childChild);
+                                parentParent.connectChild(0, currentNodeParent);//???????
+                            } else {
+                                Node23<Integer, Integer> childChild = parentParentChild.getChild(1);
+                                parentParentChild.disconnectChild(1);
+                                parentParent.insertData(parentParentChildData);
+                                parentParent.connectChild(1, childChild);
+                                parentParent.connectChild(2, currentNodeParent);//???????
+                            }
+                        }
+
+
 
                     }
                 }
             } else {
-                //非叶子节点
+                //非叶子节点：先中序遍历得到前驱或后继，然后补位
 
+                int nodeItemNum = currentNode.getItemNum();
+                if (nodeItemNum == 1) {
+                    //case1:删除的节点是两节点的元素
+
+                } else {
+                    //case2：删除的节点是三节点的元素
+
+                }
             }
         }
     }
+
+    /**
+     * 判断当前树是否是满二叉树  ????
+     * @param root root
+     * @return boolean
+     */
+    boolean isFullTwoTree(Node23 root) {
+        boolean flag = true;
+        if (root == null) {
+            return flag;
+        }
+        if (root.getItemNum() != 1) {
+            return false;
+        }
+        boolean leftFlag = isFullTwoTree(root.getChild(0));
+        boolean rightFlag = isFullTwoTree(root.getChild(1));
+        return leftFlag && rightFlag;
+    }
+
+
+
 
     /**
      * 删除左旋操作
@@ -195,7 +307,7 @@ public class Tree23<Key extends Comparable<Key>, Value> {
      * @param node23 node
      */
     private void leftRotate(Node23<Integer, Integer> node23) {
-        System.out.println("删除节点 的父节点数据如下:");
+        System.out.println("左旋操作 删除节点 的父节点数据如下:");
         node23.getItemDatas()[0].displayData();
         Node23<Integer, Integer> leftNode = node23.getChild(0);
         Node23<Integer, Integer> rightNode = node23.getChild(1);
@@ -206,6 +318,22 @@ public class Tree23<Key extends Comparable<Key>, Value> {
         rightNode.insertData(item1);
         node23.insertData(item2);
     }
+
+    /**
+     * 删除右旋操作
+     * @param node23 node
+     */
+    private void rightRotate(Node23<Integer, Integer> node23) {
+        System.out.println("右旋操作 删除节点 的父节点数据如下:");
+        node23.getItemDatas()[0].displayData();
+        Node23<Integer, Integer> leftNode = node23.getChild(0);
+        Node23<Integer, Integer> rightNode = node23.getChild(1);
+        rightNode.removeItem();
+        rightNode.insertData(node23.removeItem());
+        Data<Integer, Integer> item1 = leftNode.removeItem();
+        node23.insertData(item1);
+    }
+
 
     /**
      * 中序遍历

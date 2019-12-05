@@ -67,24 +67,23 @@ public class RedBlackBST<Key extends Comparable, Value> {
     }
 
     //value associated with the given key in subtree rooted at x; null if no such key
-    private Value get(Node x, Key key) {
-        while(x != null) {
-            int cmp = key.compareTo(x.getKey());
+    private Value get(Node node, Key key) {
+        while(node != null) {
+            int cmp = key.compareTo(node.getKey());
             if(cmp < 0) {
-                x = x.getLeft();
+                node = node.getLeft();
             }
             else if(cmp > 0) {
-                x = x.getRight();
+                node = node.getRight();
             }
             else {
-                return (Value) x.getVal();
+                return (Value) node.getVal();
             }
         }
         return null;
     }
 
     /**
-     * does this symbol table contain the given key?
      * @param key the key
      * @return true if this symbol table contains key and false otherwise
      */

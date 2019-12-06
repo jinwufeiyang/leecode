@@ -427,8 +427,9 @@ public class RBTree<T extends Comparable<T>> {
             if(parent == node) { //后继节点是被删除节点的子节点
                 parent = replace;
             } else { //否则
-                if(child != null)
+                if(child != null) {
                     setParent(child, parent);
+                }
                 parent.left = child;
                 replace.right = node.right;
                 setParent(node.right, replace);

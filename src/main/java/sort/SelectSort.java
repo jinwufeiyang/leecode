@@ -17,6 +17,11 @@ public class SelectSort {
         }
     }
 
+    /**
+     * 核心算法
+     * @param origin 原数组
+     * @return 有序数组
+     */
     private static int[] selectSort(int[] origin) {
         int arrayLength = origin.length;
         for (int i = 0; i < arrayLength - 1; i++) {

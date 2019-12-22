@@ -4,6 +4,7 @@ package sort;
  * @version v1.0
  * @ClassName: InsertionSort
  * @Description: 插入排序
+ * 插入排序对于部分有序的数组十分高效，也很适合小规模数组。
  * @Author: JW
  * @Date: 2019/12/22 20:23
  */

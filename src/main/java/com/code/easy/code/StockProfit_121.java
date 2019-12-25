@@ -1,7 +1,5 @@
 package com.code.easy.code;
 
-import com.google.common.collect.Maps;
-
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +7,7 @@ import java.util.Map;
 public class StockProfit_121 {
 
     private static int maxProfit(int[] prices) {
-        Integer maxPrice = 0;
+        int maxPrice = 0;
         if (prices.length> 0) {
             Map<String, Integer> map = new HashMap<>();
             for (int i=0; i<prices.length; i++) {

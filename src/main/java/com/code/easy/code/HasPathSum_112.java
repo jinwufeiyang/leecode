@@ -66,4 +66,9 @@ public class HasPathSum_112 {
         return hasPathSum2(root.left, sum-root.val) || hasPathSum2(root.right, sum-root.val);
     }
 
+    /**
+     * todo 优化
+     * DFS 、 BFS  、、 迭代
+     */
+
 }

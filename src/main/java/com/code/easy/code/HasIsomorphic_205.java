@@ -1,7 +1,6 @@
 package com.code.easy.code;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @version v1.0

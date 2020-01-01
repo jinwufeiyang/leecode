@@ -1,6 +1,7 @@
 package com.code.easy.code.array;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 两个数组的交集
@@ -33,5 +34,15 @@ public class Intersection_349 {
     }
 
     public static void main(String[] args) {
+    }
+
+    public static int[] intersection2(int[] nums1, int[] nums2) {
+        if (nums1 == null || nums2 == null) {
+            return new int[0];
+        }
+        Set<Integer> set1 = Arrays.stream(nums1).boxed().collect(Collectors.toSet());
+        Set<Integer> set2 = Arrays.stream(nums2).boxed().collect(Collectors.toSet());
+        set1.retainAll(set2);
+        return set1.stream().mapToInt(Integer::intValue).toArray();
     }
 }

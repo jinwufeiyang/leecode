@@ -1,9 +1,12 @@
-package com.code.easy.code;
+package com.code.easy.code.array;
 
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 买卖股票的最佳时机
+ */
 public class StockProfit_121 {
 
     private static int maxProfit(int[] prices) {

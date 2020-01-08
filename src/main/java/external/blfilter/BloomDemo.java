@@ -6,6 +6,9 @@ import com.google.common.hash.Funnels;
 public class BloomDemo {
 
     public static void main(String[] args) {
-        BloomFilter bloomFilter = BloomFilter.create(Funnels.integerFunnel(), 100000, 0.01);
+        BloomFilter filter = BloomFilter.create(Funnels.integerFunnel(), 100000, 0.01);
+        for (int i=0; i<1000;i++) {
+            filter.put(i);
+        }
     }
 }
